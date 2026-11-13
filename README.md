@@ -34,3 +34,26 @@ Starter implementation based on the supplied project specification. Built with N
 
 ## Deploy
 Deploy the repository to Vercel or another Node-compatible host. Set the same environment variables in production, configure the domain and HTTPS, then test the complete registration flow using a non-public test program before opening public registration.
+
+
+## Basic Super Admin dashboard (feature/admin-dashboard)
+
+Admin pages added in this branch:
+- `/admin/login` — Supabase Auth email/password login.
+- `/admin` — registration and program overview.
+- `/admin/registrations` — latest 200 registrations (read-only).
+- `/admin/programs` — program catalog overview (read-only).
+
+### Enable the first Super Admin
+1. Configure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and the existing server-only `SUPABASE_SERVICE_ROLE_KEY` in the deployment environment.
+2. In Supabase Authentication, create the administrator user with email/password.
+3. In the Supabase SQL Editor, assign the role to that exact Auth user (replace the email):
+   ```sql
+   update auth.users
+   set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role":"super_admin"}'::jsonb
+   where email = 'admin@yourdomain.com';
+   ```
+4. Deploy this branch, then visit `/admin/login`. The session cookie is HTTP-only, Secure in production, SameSite=Lax, and limited to one hour. Sign in again after expiry.
+5. Keep the service-role key server-only. Never expose it in browser code or commit it to Git.
+
+The dashboard checks the authenticated user's server-side Supabase `app_metadata.role` before rendering protected pages. Registration and program tables are queried server-side using the existing service-role client. This first iteration is intentionally read-only for registrations and programs; no destructive CRUD or status mutations are exposed yet.
