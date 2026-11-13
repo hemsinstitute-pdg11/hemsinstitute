@@ -16,7 +16,7 @@ function validate(body: any) {
 }
 export async function POST(req: NextRequest) {
   const auth = await requireAdminApi(req); if (auth.response) return auth.response;
-  try { const body = await req.json(); const parsed = validate(body); if (parsed.error) return NextResponse.json({ error: parsed.error }, { status: 400 });
+  try { const body = await req.json(); const parsed = validate(body); if ("error" in parsed) return NextResponse.json({ error: parsed.error }, { status: 400 });
     const { data, error } = await getSupabaseAdmin().from("programs").insert(parsed.value!).select("id").single();
     if (error) return NextResponse.json({ error: error.code === "23505" ? "Slug program sudah digunakan. Ubah slug atau nama program." : "Program gagal disimpan. Periksa kategori dan data yang diisi." }, { status: error.code === "23505" ? 409 : 400 });
     return NextResponse.json({ ok: true, id: data.id });
