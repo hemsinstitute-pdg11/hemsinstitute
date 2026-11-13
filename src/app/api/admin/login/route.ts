@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Akun tidak memiliki akses Super Admin atau kredensial salah." }, { status: 401 });
     }
     const response = NextResponse.json({ ok: true });
-    const options = { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" as const, path: "/", maxAge: 60 * 60 * 8 };
+    const options = { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" as const, path: "/", maxAge: 60 * 60 };
     response.cookies.set("hi_admin_access", data.session!.access_token, options);
     response.cookies.set("hi_admin_refresh", data.session!.refresh_token, options);
     return response;
