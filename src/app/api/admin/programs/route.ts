@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   const auth = await requireAdminApi(req); if (auth.response) return auth.response;
   try { const body = await req.json(); const id = text(body?.id, 64); if (!id) return NextResponse.json({ error: "ID program tidak valid." }, { status: 400 });
-    const parsed = validate(body); if (parsed.error) return NextResponse.json({ error: parsed.error }, { status: 400 });
+    const parsed = validate(body); if ("error" in parsed) return NextResponse.json({ error: parsed.error }, { status: 400 });
     const { data, error } = await getSupabaseAdmin().from("programs").update(parsed.value!).eq("id", id).select("id").maybeSingle();
     if (error) return NextResponse.json({ error: error.code === "23505" ? "Slug program sudah digunakan." : "Program gagal diperbarui." }, { status: error.code === "23505" ? 409 : 400 });
     if (!data) return NextResponse.json({ error: "Program tidak ditemukan." }, { status: 404 });
