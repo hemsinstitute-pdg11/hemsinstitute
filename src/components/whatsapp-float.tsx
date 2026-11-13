@@ -1,0 +1,1 @@
+export function WhatsAppFloat(){const n=process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;return n?<a className="whatsapp-float" href={`https://wa.me/${n}`} target="_blank" rel="noreferrer" aria-label="Hubungi Hem's Institute melalui WhatsApp">WhatsApp</a>:null}

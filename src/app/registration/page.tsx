@@ -1,0 +1,4 @@
+import RegistrationForm from "./registration-form";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
+export const dynamic="force-dynamic";
+export default async function Registration(){let programs:any[]=[];try{const {data}=await getSupabaseAdmin().from("programs").select("id,name").eq("is_active",true).order("name");programs=data||[]}catch{}return <><section className="page-hero"><div className="container"><span className="eyebrow">Pendaftaran Online</span><h1 className="page-title">Daftar Program</h1><p>Isi data dengan benar. Tim Hem's Institute akan membantu proses selanjutnya.</p></div></section><section className="section"><div className="container" style={{maxWidth:760}}>{programs.length?<RegistrationForm programs={programs}/>:<div className="empty">Formulir pendaftaran akan aktif setelah katalog program dikonfigurasi. Silakan hubungi admin.</div>}</div></section></>}
