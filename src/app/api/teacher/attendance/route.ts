@@ -19,9 +19,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const action = body.action;
-    const latitude = Number(body.latitude), longitude = Number(body.longitude), accuracy = Number(body.accuracy);
-    if (!["check_in", "check_out"].includes(action) || !Number.isFinite(latitude) || !Number.isFinite(longitude) ||
-      latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 || !Number.isFinite(accuracy) || accuracy <= 0 || accuracy > 50) {
+    const latitude = body.latitude, longitude = body.longitude, accuracy = body.accuracy;
+    if (!["check_in", "check_out"].includes(action) || typeof latitude !== "number" || !Number.isFinite(latitude) || typeof longitude !== "number" || !Number.isFinite(longitude) ||
+      latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 || typeof accuracy !== "number" || !Number.isFinite(accuracy) || accuracy <= 0 || accuracy > 50) {
       return NextResponse.json({ error: "Data lokasi tidak valid atau akurasi GPS lebih buruk dari 50 meter. Coba lagi di area terbuka." }, { status: 400 });
     }
     const db = getSupabaseAdmin();
