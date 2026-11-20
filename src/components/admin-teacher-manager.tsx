@@ -5,14 +5,15 @@ export default function AdminTeacherManager({ initialTeachers }: { initialTeache
   const [busy, setBusy] = useState(false), [message, setMessage] = useState(""), [error, setError] = useState("");
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setMessage(""); setError("");
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     try {
       const response = await fetch("/api/admin/attendance/teachers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         fullName: form.get("fullName"), email: form.get("email"), teacherCode: form.get("teacherCode"), password: form.get("password")
       }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Gagal membuat akun.");
-      setMessage(result.message); event.currentTarget.reset(); window.location.reload();
+      setMessage(result.message); formElement.reset(); window.location.reload();
     } catch (e) { setError(e instanceof Error ? e.message : "Gagal membuat akun."); }
     finally { setBusy(false); }
   }
