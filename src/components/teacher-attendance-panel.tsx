@@ -30,7 +30,7 @@ export default function TeacherAttendancePanel({ teacher, initialRecord, setting
       {!settings?.location_verified && <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800">Titik lokasi belum diverifikasi admin. Absensi belum dapat digunakan.</p>}
       {message && <p className="rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{message}</p>}{error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
       <div className="grid gap-3 sm:grid-cols-2"><button onClick={() => punch("check_in")} disabled={busy || !canIn || !settings?.location_verified} className="rounded-xl bg-emerald-600 px-4 py-4 font-semibold text-white disabled:opacity-40">{busy ? "Memeriksa GPS..." : "Absen Masuk"}</button><button onClick={() => punch("check_out")} disabled={busy || !canOut || !settings?.location_verified} className="rounded-xl bg-blue-700 px-4 py-4 font-semibold text-white disabled:opacity-40">{busy ? "Memeriksa GPS..." : "Absen Pulang"}</button></div>
-      <p className="text-xs leading-5 text-slate-500">Lokasi hanya diminta saat tombol absensi ditekan. Aktifkan GPS dan izinkan akses lokasi. Sistem menolak data GPS dengan akurasi di atas 100 meter atau posisi di luar radius.</p>
+      <p className="text-xs leading-5 text-slate-500">Lokasi hanya diminta saat tombol absensi ditekan. Aktifkan GPS dan izinkan akses lokasi. Sistem menolak data GPS dengan akurasi di atas 50 meter atau posisi di luar radius.</p>
     </div>
   </section>;
 }
