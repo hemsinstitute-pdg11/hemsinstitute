@@ -21,8 +21,8 @@ export async function POST(req: NextRequest) {
     const action = body.action;
     const latitude = Number(body.latitude), longitude = Number(body.longitude), accuracy = Number(body.accuracy);
     if (!["check_in", "check_out"].includes(action) || !Number.isFinite(latitude) || !Number.isFinite(longitude) ||
-      latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 || !Number.isFinite(accuracy) || accuracy <= 0 || accuracy > 100) {
-      return NextResponse.json({ error: "Data lokasi tidak valid atau akurasi GPS lebih buruk dari 100 meter. Coba lagi di area terbuka." }, { status: 400 });
+      latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 || !Number.isFinite(accuracy) || accuracy <= 0 || accuracy > 50) {
+      return NextResponse.json({ error: "Data lokasi tidak valid atau akurasi GPS lebih buruk dari 50 meter. Coba lagi di area terbuka." }, { status: 400 });
     }
     const db = getSupabaseAdmin();
     const { data: settings, error: settingsError } = await db.from("attendance_settings").select("*").eq("id", 1).single();
